@@ -6,7 +6,7 @@
 models/
 
 # Local Chroma db
-.chroma/
+.chroma/gt
 db/
 
 # Byte-compiled / optimized / DLL files
