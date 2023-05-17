@@ -2,7 +2,7 @@
 import os
 
 import dotenv
-import privateGPT
+import localLLM
 import streamlit as st
 from streamlit_chat import message
 from streamlit_extras.add_vertical_space import add_vertical_space
@@ -52,7 +52,7 @@ response_container = st.container()
 def generate_response(input_str=""):
     print(f"Input:{input_str}")
     # Declare a varible
-
+    qaSystem = None
     with response_container:
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -98,10 +98,10 @@ def generate_response(input_str=""):
                 if not st.session_state.initialized:
                     st.session_state.initialized = True
                     print("Initializing...")
-                    privateGPT.QASystem()
+                    qaSystem= localLLM.QASystem()
                 else:
                     print("Already initialized!")
-                response = privateGPT.QASystem().prompt_once(st.session_state.input)
+                response = qaSystem.prompt_once(st.session_state.input)
                 print(response)
                 st.session_state.input = ""
                 answer, docs = response["result"], response["source_documents"]
