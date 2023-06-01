@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>privateGPT</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input[type="textarea"] {
+            height: 200px; /* Adjust the height as desired */
+            width: 100%;
+        }
+        .output {
+            margin-top: 20px; /* Adjust the spacing as desired */
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>privateGPT</h1>
+    <p>Ask questions to your local documents , using the power of LLMs.</p>
+    <form action="/query" method="post">
+        <textarea name="query" placeholder="Enter a query"></textarea>
+        <br>
+        <input type="submit" value="Ask">
+    </form>
+    <div class="output">
+        <!-- Output from API request will be added here -->
+        {% if
+                %}
+            <p>{{ output }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 from dotenv import load_dotenv
 from langchain.chains import RetrievalQA
 from langchain.embeddings import HuggingFaceEmbeddings
@@ -21,26 +21,11 @@ model_n_ctx = os.environ.get('MODEL_N_CTX')
 
 from constants import CHROMA_SETTINGS
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="templates")
 qa2 = QASingleton().qa
 @app.route("/")
 def index():
-    return """
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>privateGPT</title>
-    </head>
-    <body>
-        <h1>privateGPT</h1>
-        <p>Ask questions to your documents without an internet connection, using the power of LLMs.</p>
-        <form action="/query" method="post">
-            <input type="text" name="query" placeholder="Enter a query">
-            <input type="submit" value="Ask">
-        </form>
-    </body>
-    </html>
-    """
+    return render_template("index.html")
 
 @app.route("/query", methods=["POST"])
 def query():
@@ -62,8 +47,7 @@ def query():
         print("\n> " + document.metadata["source"] + ":")
         print(document.page_content)
 
-
-    return answer
+    return render_template('response.html', output=answer, query=query)
 
 
 def parse_arguments():
