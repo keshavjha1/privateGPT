@@ -15,7 +15,12 @@ persist_directory = os.environ.get('PERSIST_DIRECTORY')
 model_type = os.environ.get('MODEL_TYPE')
 model_path = os.environ.get('MODEL_PATH')
 model_n_ctx = os.environ.get('MODEL_N_CTX')
-
+model_type = os.environ.get('MODEL_TYPE')
+model_path = os.environ.get('MODEL_PATH')
+model_n_ctx = os.environ.get('MODEL_N_CTX')
+model_max_tokens = int(os.environ.get("MODEL_MAX_TOKENS"))
+model_temp = float(os.environ.get("MODEL_TEMP", "0.8"))
+model_stop = os.environ.get("MODEL_STOP", "")
 from constants import CHROMA_SETTINGS
 class QASingleton:
     """Singleton class that provides qa as one property."""
@@ -40,7 +45,16 @@ class QASingleton:
         # Prepare the LLM
         match model_type:
             case "LlamaCpp":
-                llm = LlamaCpp(model_path=model_path, n_ctx=model_n_ctx, callbacks=callbacks, verbose=False)
+                llm = LlamaCpp(model_path=model_path,
+                n_ctx=model_n_ctx,
+                temperature=model_temp,
+                callbacks=callbacks,
+                verbose=True,
+                n_threads=6,
+                n_batch=1000,
+                max_tokens=model_max_tokens,
+                echo=True
+            )
             case "GPT4All":
                 llm = GPT4All(model=model_path, n_ctx=model_n_ctx, backend='gptj', callbacks=callbacks, verbose=False)
             case _default:
